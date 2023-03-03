@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-frontend-deploy
+spec:
+  selector:
+    matchLabels:
+      app: ms-frontend
+  template:
+    metadata:
+      labels:
+        app: ms-frontend
+    spec:
+      containers:
+      - name: ms-frontend
+        image: andr35/devops-ninja:1.0-ms-frontend
+        ports:
+        - containerPort: 3000
+        env:
+          - name: PRODUCTS
+            value: "products"
+          - name: SHOPPING
+            value: "shopping-cart"            
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-frontend
+spec:
+  type: NodePort
+  selector:
+    app: ms-frontend
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000

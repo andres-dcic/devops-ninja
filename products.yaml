@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-products-deploy
+spec:
+  selector:
+    matchLabels:
+      app: ms-products
+  template:
+    metadata:
+      labels:
+        app: ms-products
+    spec:
+      containers:
+      - name: ms-products
+        image: andr35/devops-ninja:1.0-ms-products
+        ports:
+        - containerPort: 3001
+
+--- 
+apiVersion: v1
+kind: Service
+metadata:
+  name: products
+spec:
+  selector:
+    app: ms-products
+  ports:
+  - port: 3001
+    protocol: TCP
+    targetPort: 3001
